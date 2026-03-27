@@ -1,0 +1,148 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Part {
+  id    String   @id
+  level String   @unique // "A", "B", "C", "D", "E"
+  label String             // "A-Nivel 1", "B-Nivel 2", etc
+  color String   @default("gray") // para el diagrama
+  toolCatalog ToolCatalog[]
+  tools Tool[]  // herramientas asignadas a técnicos en esta parte
+}
+
+model ToolCatalog {
+  id        String   @id
+  item      String   @unique // nombre único de la herramienta
+  partId    String?  // opcional - se asigna cuando se usa en técnico/casillero
+  part      Part?    @relation(fields: [partId], references: [id])
+  tools     Tool[]
+  lockerTools LockerTool[]
+  createdAt DateTime @default(now())
+}
+
+model Tool {
+  id           String   @id
+  toolCatalogId String
+  toolCatalog  ToolCatalog @relation(fields: [toolCatalogId], references: [id], onDelete: Cascade)
+  partId       String?  // la parte donde el técnico guarda la herramienta (relación a Part)
+  part         Part?    @relation(fields: [partId], references: [id])
+  partLabel    String?  // texto libre para la parte/ubicación
+  quantity     Int      @default(1)
+  complement   String?
+  technicianId String
+  technician   Technician @relation(fields: [technicianId], references: [id], onDelete: Cascade)
+  evaluationItems EvaluationItem[]
+  createdAt    DateTime @default(now())
+}
+
+model Assignment {
+  id             String           @id
+  technicianId   String
+  materialId     String
+  material       Material         @relation(fields: [materialId], references: [id])
+  technician     Technician       @relation(fields: [technicianId], references: [id])
+  evaluationItems EvaluationItem[]
+}
+
+model AuditLog {
+  id         String   @id
+  entityType String
+  entityId   String
+  action     String
+  userId     String?
+  timestamp  DateTime @default(now())
+  diff       Json?
+}
+
+model Evaluation {
+  id             String           @id
+  technicianId   String
+  evaluatorName  String?          // Nombre del supervisor/evaluador
+  observations   String?          // Campo para observaciones generales
+  date           DateTime         @default(now())
+  technician     Technician       @relation(fields: [technicianId], references: [id])
+  evaluationItems EvaluationItem[]
+}
+
+model EvaluationItem {
+  id                 String      @id
+  evaluationId       String
+  assignmentId       String?
+  toolId             String?
+  lockerToolId       String?     // Para evaluar herramientas de casilleros
+  hasItem            Boolean
+  isClean            Boolean
+  quantityObserved   Int?
+  complementObserved String?
+  observations       String?     // Observaciones específicas del ítem
+  assignment         Assignment? @relation(fields: [assignmentId], references: [id])
+  tool               Tool?       @relation(fields: [toolId], references: [id])
+  lockerTool         LockerTool? @relation(fields: [lockerToolId], references: [id], onDelete: Cascade)
+  evaluation         Evaluation  @relation(fields: [evaluationId], references: [id])
+}
+
+model Locker {
+  id           String            @id
+  number       Int               // número secuencial automático
+  name         String            // "CASILLERO-001", "CASILLERO-002", etc (generado automáticamente)
+  location     String?
+  technicianId String
+  technician   Technician        @relation(fields: [technicianId], references: [id], onDelete: Cascade)
+  materials    LockerMaterial[]
+  tools        LockerTool[]
+  createdAt    DateTime @default(now())
+}
+
+model LockerTool {
+  id               String             @id
+  lockerId         String
+  toolCatalogId    String
+  toolCatalog      ToolCatalog        @relation(fields: [toolCatalogId], references: [id], onDelete: Cascade)
+  partLabel        String?            // Texto libre para la parte/ubicación
+  quantity         Int                @default(1)
+  complement       String?
+  createdAt        DateTime           @default(now())
+  locker           Locker             @relation(fields: [lockerId], references: [id], onDelete: Cascade)
+  evaluationItems  EvaluationItem[]
+}
+
+model Material {
+  id         String       @id
+  category   String
+  name       String
+  quantity   Int
+  complement String?
+  assignments Assignment[]
+  lockers    LockerMaterial[]
+}
+
+model LockerMaterial {
+  id         String   @id
+  lockerId   String
+  materialId String
+  quantity   Int      @default(1)
+  createdAt  DateTime @default(now())
+  locker     Locker   @relation(fields: [lockerId], references: [id], onDelete: Cascade)
+  material   Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@unique([lockerId, materialId])
+}
+
+model Technician {
+  id           String       @id
+  name         String
+  initial      String?
+  specialty    String
+  employeeCode String?
+  assignments  Assignment[]
+  evaluations  Evaluation[]
+  lockers      Locker[]
+  tools        Tool[]
+  createdAt    DateTime @default(now())
+}
