@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { Assignment, Material } from '@prisma/client';
 
 export async function GET(
   request: NextRequest,
@@ -12,7 +13,7 @@ export async function GET(
       include: { material: true },
     });
 
-    const formattedAssignments = assignments.map(assignment => ({
+    const formattedAssignments = assignments.map((assignment: Assignment & { material: Material }) => ({
       id: assignment.id,
       material: assignment.material
     }));
