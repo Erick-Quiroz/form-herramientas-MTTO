@@ -14,7 +14,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U Mantimiento"]
+      test: [ "CMD-SHELL", "pg_isready -U Mantimiento" ]
       interval: 10s
       timeout: 5s
       retries: 5

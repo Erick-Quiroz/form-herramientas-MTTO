@@ -185,89 +185,89 @@ export default function TechnicianListInteractive({ onTechnicianUpdated }: Techn
           ) : (
             <div className="grid gap-3">
               {filteredTechnicians.map((tech) => (
-              <Card
-                key={tech.id}
-                className="p-4 hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-start justify-between">
-                  <div
-                    className="flex-1 cursor-pointer hover:bg-gray-50 rounded p-2 -m-2"
-                    onClick={() => router.push(`/technicians/${tech.id}`)}
-                  >
-                    <h3 className="font-semibold text-lg text-gray-900">{tech.name}</h3>
-                    <div className="text-sm text-gray-600 mt-1 space-y-0.5">
-                      {tech.initial && (
+                <Card
+                  key={tech.id}
+                  className="p-4 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start justify-between">
+                    <div
+                      className="flex-1 cursor-pointer hover:bg-gray-50 rounded p-2 -m-2"
+                      onClick={() => router.push(`/technicians/${tech.id}`)}
+                    >
+                      <h3 className="font-semibold text-lg text-gray-900">{tech.name}</h3>
+                      <div className="text-sm text-gray-600 mt-1 space-y-0.5">
+                        {tech.initial && (
+                          <p>
+                            <span className="font-medium">Inicial:</span> {tech.initial}
+                          </p>
+                        )}
                         <p>
-                          <span className="font-medium">Inicial:</span> {tech.initial}
+                          <span className="font-medium">Especialidad:</span> {tech.specialty}
                         </p>
-                      )}
-                      <p>
-                        <span className="font-medium">Especialidad:</span> {tech.specialty}
-                      </p>
-                      {tech.employeeCode && (
-                        <p>
-                          <span className="font-medium">Código:</span> {tech.employeeCode}
-                        </p>
-                      )}
-                    </div>
-                    
-                    {/* Stats Section */}
-                    <div className="mt-3 pt-3 border-t border-gray-200">
-                      <div className="grid grid-cols-2 gap-2 mb-2 text-xs">
-                        <div className="bg-purple-50 rounded p-2">
-                          <p className="font-medium text-purple-900">Casilleros:</p>
-                          <p className="text-purple-700">{getStats(tech).lockersCount}</p>
-                        </div>
-                        <div className="bg-amber-50 rounded p-2">
-                          <p className="font-medium text-amber-900">Herramientas:</p>
-                          <p className="text-amber-700">{getStats(tech).directToolsCount}</p>
-                        </div>
+                        {tech.employeeCode && (
+                          <p>
+                            <span className="font-medium">Código:</span> {tech.employeeCode}
+                          </p>
+                        )}
                       </div>
-                      <div className="bg-green-50 rounded p-2 text-xs">
-                        <p className="font-medium text-green-900">Total herramientas + casillero:</p>
-                        <p className="text-green-700">{getStats(tech).totalToolsCount}</p>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="flex gap-2 items-center">
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        router.push(`/technicians/${tech.id}`);
-                      }}
-                      size="sm"
-                      className="flex items-center gap-1"
-                    >
-                      <ArrowRight size={16} />
-                      Ver
-                    </Button>
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEditingTechnician(tech);
-                        setIsEditModalOpen(true);
-                      }}
-                      variant="outline"
-                      size="sm"
-                    >
-                      <Edit2 size={16} />
-                    </Button>
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(tech.id);
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className="text-red-600 hover:bg-red-50"
-                    >
-                      <Trash2 size={16} />
-                    </Button>
+                      {/* Stats Section */}
+                      <div className="mt-3 pt-3 border-t border-gray-200">
+                        <div className="grid grid-cols-2 gap-2 mb-2 text-xs">
+                          <div className="bg-purple-50 rounded p-2">
+                            <p className="font-medium text-purple-900">Casilleros:</p>
+                            <p className="text-purple-700">{getStats(tech).lockersCount}</p>
+                          </div>
+                          <div className="bg-amber-50 rounded p-2">
+                            <p className="font-medium text-amber-900">Herramientas:</p>
+                            <p className="text-amber-700">{getStats(tech).directToolsCount}</p>
+                          </div>
+                        </div>
+                        <div className="bg-green-50 rounded p-2 text-xs">
+                          <p className="font-medium text-green-900">Total herramientas + casillero:</p>
+                          <p className="text-green-700">{getStats(tech).totalToolsCount}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 items-center">
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/technicians/${tech.id}`);
+                        }}
+                        size="sm"
+                        className="flex items-center gap-1"
+                      >
+                        <ArrowRight size={16} />
+                        Ver
+                      </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingTechnician(tech);
+                          setIsEditModalOpen(true);
+                        }}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <Edit2 size={16} />
+                      </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(tech.id);
+                        }}
+                        variant="outline"
+                        size="sm"
+                        className="text-red-600 hover:bg-red-50"
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))}
             </div>
           )}
         </div>
