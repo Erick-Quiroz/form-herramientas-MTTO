@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { LockerDiagram } from '@/components/LockerDiagram';
 import ToolSearchSelector from './ToolSearchSelector';
 import { Plus, Trash2, ChevronDown, ChevronUp, Edit2, Check, X } from 'lucide-react';
 import { toastConfirm, toastError, toastSuccess } from '@/lib/toast';
@@ -259,8 +258,6 @@ export default function LockerManager({ technicianId }: LockerManagerProps) {
 
               {expandedLocker === locker.id && (
                 <div className="border-t p-4 bg-gray-50 space-y-4">
-                  <LockerDiagram />
-
                   <ToolSearchSelector
                     parts={parts}
                     onAddTool={(selectedTool: SelectedTool) => {

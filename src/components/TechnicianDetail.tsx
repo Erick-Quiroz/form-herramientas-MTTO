@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import LockerManager from './LockerManager';
 import ToolAssignmentManager from './ToolAssignmentManager';
+import EvaluationManager from './EvaluationManager';
 
 interface Technician {
   id: string;
@@ -90,6 +91,16 @@ export default function TechnicianDetail({ technicianId, onClose }: TechnicianDe
           >
             Casilleros
           </Tab>
+          <Tab
+            className={({ selected }) =>
+              `w-full py-2.5 text-sm font-medium rounded-lg transition-colors ${selected
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-700 hover:bg-white/20'
+              }`
+            }
+          >
+            Evaluaciones
+          </Tab>
         </Tab.List>
 
         <Tab.Panels>
@@ -98,6 +109,9 @@ export default function TechnicianDetail({ technicianId, onClose }: TechnicianDe
           </Tab.Panel>
           <Tab.Panel>
             <LockerManager technicianId={technicianId} />
+          </Tab.Panel>
+          <Tab.Panel>
+            <EvaluationManager technicianId={technicianId} technicianName={technician.name} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

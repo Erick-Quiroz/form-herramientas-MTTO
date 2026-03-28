@@ -6,7 +6,7 @@ import {
   Home,
   Users,
   ClipboardCheck,
-  BarChart3,
+  Download,
   Wrench,
 } from "lucide-react";
 
@@ -15,7 +15,7 @@ const NAVIGATION_ITEMS = [
   { href: "/technicians", label: "Técnicos", icon: Users },
   { href: "/tools", label: "Herramientas", icon: Wrench },
   { href: "/evaluation", label: "Evaluación", icon: ClipboardCheck },
-  { href: "/reports", label: "Reportes", icon: BarChart3 },
+  { href: "/exportar", label: "Exportar", icon: Download },
 ];
 
 export function Navbar() {

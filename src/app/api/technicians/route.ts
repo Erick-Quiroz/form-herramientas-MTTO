@@ -15,7 +15,28 @@ export async function GET(request: NextRequest) {
           assignments: {
             include: { material: true },
           },
-          lockers: true,
+          tools: {
+            include: { toolCatalog: true },
+          },
+          lockers: {
+            include: {
+              tools: {
+                include: { toolCatalog: true },
+              },
+              materials: true,
+            },
+          },
+          evaluations: {
+            include: {
+              evaluationItems: {
+                include: {
+                  assignment: { include: { material: true } },
+                  tool: { include: { toolCatalog: true } },
+                  lockerTool: { include: { toolCatalog: true } },
+                },
+              },
+            },
+          },
         },
       });
 
@@ -34,7 +55,28 @@ export async function GET(request: NextRequest) {
         assignments: {
           include: { material: true },
         },
-        lockers: true,
+        tools: {
+          include: { toolCatalog: true },
+        },
+        lockers: {
+          include: {
+            tools: {
+              include: { toolCatalog: true },
+            },
+            materials: true,
+          },
+        },
+        evaluations: {
+          include: {
+            evaluationItems: {
+              include: {
+                assignment: { include: { material: true } },
+                tool: { include: { toolCatalog: true } },
+                lockerTool: { include: { toolCatalog: true } },
+              },
+            },
+          },
+        },
       },
     });
 
